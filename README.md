@@ -85,7 +85,7 @@ Se ejecutaron dos simulaciones tipo *Game Day* en un entorno controlado para eva
 
 **Captura de la ejecución del sistema de monitorización, alertas y respuesta a incidentes en Google Colab:**
 
-![Evidencia Simulación Colab](./ruta_a_tu_imagen/captura_colab.png)
+![Evidencia Simulación Colab](Evidencia.png)
 
 ---
 
