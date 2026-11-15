@@ -98,8 +98,9 @@ Se ejecutaron dos simulaciones tipo *Game Day* en un entorno controlado para eva
 
 ## 8. Código de Monitorización y Configuración de Alertas
 
-A continuación, se incluye el script de Python (`monitor_alerts.py`) que simula la evaluación del rendimiento, la detección de anomalías y la ejecución de la respuesta automatizada (Rollback) interactuando con MLflow. Opté por usar una simulación 100% ya que se me complica para esta entrega estar debuggeando MLFlow para que funciones en mi computadora.
+A continuación, se incluye el script de Python (`monitor_alerts.py`) que simula la evaluación del rendimiento, la detección de anomalías y la ejecución de la respuesta automatizada (Rollback) interactuando con MLflow. Opté por usar una simulación 100% ya que se me complica para esta entrega estar debuggeando MLflow para que funcione en mi computadora.
 
+```python
 import time
 import logging
 import random
