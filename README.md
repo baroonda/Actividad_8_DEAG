@@ -79,20 +79,13 @@ Se ejecutaron dos simulaciones tipo *Game Day* en un entorno controlado para eva
 
 ---
 
-## 7. Evidencia de Implementación (Capturas)
+## 7. Evidencia de Implementación y Simulación (Capturas)
 
-> **Nota de entrega:** Las siguientes imágenes evidencian el uso de las herramientas de monitorización y alertamiento en tiempo real.
+> **Nota de entrega:** Para garantizar la reproducibilidad y evitar problemas de configuración con puertos locales, se optó por un entorno de simulación 100% en Google Colab. La siguiente captura evidencia la recolección de métricas, la detonación de alertas basadas en los SLO definidos y la ejecución automática del runbook de rollback tras detectar el incidente crítico de *data drift*.
 
-*Reemplazar los enlaces con las capturas de pantalla de tu ejecución local.*
+**Captura de la ejecución del sistema de monitorización, alertas y respuesta a incidentes en Google Colab:**
 
-1. **Captura del Registro en MLflow (Métricas y Artefactos):**
-   `![Evidencia MLflow](./docs/img/mlflow_tracking.png)`
-
-2. **Captura de la Configuración de Alertas/Dashboards en Tiempo Real:**
-   `![Evidencia Dashboard](./docs/img/grafana_alerts.png)`
-
-3. **Captura de los Logs de la Inferencia (FastAPI):**
-   `![Evidencia Logs](./docs/img/fastapi_logs.png)`
+![Evidencia Simulación Colab](./ruta_a_tu_imagen/captura_colab.png)
 
 ---
 
