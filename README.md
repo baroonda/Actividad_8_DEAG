@@ -98,34 +98,35 @@ Se ejecutaron dos simulaciones tipo *Game Day* en un entorno controlado para eva
 
 ## 8. Código de Monitorización y Configuración de Alertas
 
-A continuación, se incluye el script de Python (`monitor_alerts.py`) que simula la evaluación del rendimiento, la detección de anomalías y la ejecución de la respuesta automatizada (Rollback) interactuando con MLflow.
+A continuación, se incluye el script de Python (`monitor_alerts.py`) que simula la evaluación del rendimiento, la detección de anomalías y la ejecución de la respuesta automatizada (Rollback) interactuando con MLflow. Opté por usar una simulación 100% ya que se me complica para esta entrega estar debuggeando MLFlow para que funciones en mi computadora.
 
-```python
 import time
 import logging
 import random
-import mlflow
-from mlflow.tracking import MlflowClient
 
-# Configuración de Logs
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Configuración de Logs para que se vean en Colab
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', force=True)
 logger = logging.getLogger(__name__)
 
-# Configuración de MLflow
-mlflow.set_tracking_uri("http://localhost:5000")
-client = MlflowClient()
-MODEL_NAME = "FraudDetectionModel"
-
-# SLOs y Umbrales
+# SLOs y Umbrales definidos en tu diseño
 SLO_MAX_LATENCY = 0.200  # 200 ms
 DRIFT_THRESHOLD = 0.05   # p-value simulado
 
+def execute_automated_rollback():
+    """Ejecuta el runbook de respuesta automatizada."""
+    logger.info("Iniciando Runbook RB-02: Rollback Automático de Modelo...")
+    time.sleep(1)
+    logger.info("MLflow: Modelo actual en Producción v2.0. Transicionando estado a 'Archived'.")
+    time.sleep(1)
+    logger.info("MLflow: Promoviendo versión estable anterior (v1.0) a 'Production'.")
+    logger.info("Rollback ejecutado con éxito. Servicio de detección de fraude restaurado.")
+
 def monitor_system():
     """Simula la recolección de métricas de producción y evaluación de alertas."""
-    logger.info("Iniciando monitorización proactiva del modelo de fraude...")
+    logger.info("Iniciando monitorización proactiva del modelo de fraude (Random Forest)...")
     
     for cycle in range(1, 6):
-        time.sleep(2)
+        time.sleep(1.5) # Pausa para simular el tiempo real
         
         # Simulando recolección de métricas
         current_latency = random.uniform(0.100, 0.350)
@@ -135,35 +136,12 @@ def monitor_system():
         
         # Evaluación de Alertas Inteligentes (SLI vs SLO)
         if current_latency > SLO_MAX_LATENCY:
-            logger.warning(f"[ALERTA] Latencia elevada detectada ({current_latency:.3f}s). Supera el SLO.")
+            logger.warning(f"[ALERTA] Latencia elevada detectada ({current_latency:.3f}s). Supera el SLO de 200ms.")
             
         # Simulación de Incidente de Degradación (Drift)
         if drift_p_value < DRIFT_THRESHOLD:
-            logger.error("[CRÍTICO] Data drift detectado. Posible degradación del modelo.")
+            logger.error("[CRÍTICO] Data drift detectado en variable 'monto'. Posible degradación del modelo.")
             execute_automated_rollback()
-            break # Detener ciclo para simular intervención
+            break # Detener ciclo tras el incidente
 
-def execute_automated_rollback():
-    """Ejecuta el runbook de respuesta automatizada utilizando MLflow."""
-    logger.info("Iniciando Runbook RB-02: Rollback Automático de Modelo...")
-    try:
-        # Lógica de MLflow para cambiar de versión
-        # Obtener la versión actual en producción
-        prod_versions = client.get_latest_versions(MODEL_NAME, stages=["Production"])
-        if prod_versions:
-            current_version = prod_versions[0].version
-            logger.info(f"Modelo actual en Producción: v{current_version}. Transicionando a Archivo.")
-            client.transition_model_version_stage(
-                name=MODEL_NAME,
-                version=current_version,
-                stage="Archived"
-            )
-            # Aquí se añadiría la lógica para promover la versión anterior N-1 a Production
-            logger.info("Rollback ejecutado con éxito. Servicio restaurado a versión de respaldo.")
-        else:
-            logger.info("Simulación: Rollback completado a versión estable por defecto.")
-    except Exception as e:
-        logger.error(f"Fallo en la automatización del rollback: {str(e)}")
-
-if __name__ == "__main__":
-    monitor_system()
+monitor_system()
